@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>職場英文小測驗 × Yoyo Business English</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Poppins:wght@400;600;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', 'Noto Sans TC', sans-serif; background: #f5efe6; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; }
+    header { text-align: center; margin-bottom: 28px; }
+    header .brand { font-size: 13px; letter-spacing: 2px; color: #a0826d; text-transform: uppercase; margin-bottom: 8px; }
+    header h1 { font-size: 26px; font-weight: 700; color: #3b2f2f; line-height: 1.3; }
+    header p { margin-top: 8px; font-size: 14px; color: #7a5c4f; }
+    .card { background: #fff; border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 560px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 16px; }
+    .progress-bar-wrap { background: #ede0d4; border-radius: 99px; height: 8px; width: 100%; margin-bottom: 20px; }
+    .progress-bar { background: #c8956c; height: 8px; border-radius: 99px; transition: width 0.4s ease; }
+    .question-num { font-size: 12px; color: #a0826d; margin-bottom: 8px; letter-spacing: 1px; }
+    .question-text { font-size: 18px; font-weight: 700; color: #3b2f2f; margin-bottom: 6px; line-height: 1.4; }
+    .question-hint { font-size: 13px; color: #9e8272; margin-bottom: 20px; }
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn { background: #fdf6f0; border: 2px solid #e8d5c4; border-radius: 12px; padding: 14px 18px; font-size: 15px; font-family: inherit; color: #3b2f2f; cursor: pointer; text-align: left; transition: all 0.2s; }
+    .option-btn:hover:not(:disabled) { border-color: #c8956c; background: #fff3ea; }
+    .option-btn.correct { border-color: #5a9e7a; background: #eaf7f0; color: #2f6b50; font-weight: 600; }
+    .option-btn.wrong { border-color: #d9534f; background: #fdecea; color: #8b2e2e; }
+    .option-btn.reveal { border-color: #5a9e7a; background: #eaf7f0; color: #2f6b50; }
+    .feedback { margin-top: 16px; padding: 14px 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; display: none; }
+    .feedback.correct { background: #eaf7f0; color: #2f6b50; }
+    .feedback.wrong { background: #fdecea; color: #8b2e2e; }
+    .next-btn { display: none; margin-top: 16px; width: 100%; padding: 14px; background: #c8956c; color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.2s; }
+    .next-btn:hover { background: #b07d58; }
+    #result-screen { display: none; text-align: center; }
+    #result-screen .score-circle { width: 120px; height: 120px; border-radius: 50%; background: #c8956c; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; font-weight: 700; }
+    #result-screen .score-circle span { font-size: 14px; font-weight: 400; margin-top: -4px; }
+    #result-screen h2 { font-size: 22px; color: #3b2f2f; margin-bottom: 8px; }
+    #result-screen p { font-size: 14px; color: #7a5c4f; margin-bottom: 20px; line-height: 1.6; }
+    .ig-cta { display: inline-block; background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; text-decoration: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 600; margin-bottom: 12px; width: 100%; }
+    .retry-btn { background: #fdf6f0; border: 2px solid #e8d5c4; border-radius: 12px; padding: 12px 28px; font-size: 15px; font-family: inherit; color: #3b2f2f; cursor: pointer; width: 100%; font-weight: 600; }
+    footer { font-size: 12px; color: #b09080; margin-top: 8px; text-align: center; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">Yoyo Business English</div>
+  <h1>職場英文小測驗 💼</h1>
+  <p>你真的懂這些職場英文嗎？10 題挑戰你的程度！</p>
+</header>
+<div class="card" id="quiz-screen">
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+  <div class="question-num" id="question-num">題目 1 / 10</div>
+  <div class="question-text" id="question-text"></div>
+  <div class="question-hint" id="question-hint"></div>
+  <div class="options" id="options"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next-btn" id="next-btn">下一題 →</button>
+</div>
+<div class="card" id="result-screen">
+  <div class="score-circle" id="score-circle"><div id="score-num">0</div><span>/ 10</span></div>
+  <h2 id="result-title"></h2>
+  <p id="result-msg"></p>
+  <a href="https://www.instagram.com/yoyo_business_english" target="_blank" class="ig-cta">📲 追蹤 @yoyo_business_english 學更多</a><br/>
+  <button class="retry-btn" onclick="restartQuiz()">🔄 再玩一次</button>
+</div>
+<footer>© Yoyo Business English｜Ms. Yo</footer>
+<script>
+const questions=[{zh:"「外派」英文怎麼說？",hint:"被公司派到海外工作的那種",options:["Outsourced","Assigned overseas / Posted overseas","Freelanced","Transferred internally"],answer:1,explanation:"✅ 正確！「外派」最道地的說法是 assigned overseas 或 posted overseas。Outsourced 是「外包」，不一樣喔！"},{zh:"老闆「畫大餅」，英文怎麼表達？",hint:"講很多美好承諾，但不一定實現",options:["Make promises","Overpromise / Paint a rosy picture","Set goals","Give feedback"],answer:1,explanation:"✅ 正確！Overpromise 或 paint a rosy picture 都很道地。也可以說 'sell a dream'、'all talk, no action'。"},{zh:"「跳槽」英文怎麼說？",hint:"換工作，跑去別的公司",options:["Jump ship","Get fired","Take a sabbatical","Freelance"],answer:0,explanation:"✅ 正確！Jump ship 非常道地，字面意思是「跳船逃走」，引申為主動離職去別家公司。也可說 switch jobs 或 move on。"},{zh:"以色列文化中的 chutzpah 是什麼意思？",hint:"這個詞來自意第緒語，有正面也有負面解讀",options:["謙虛謹慎","大膽無畏、敢衝敢說","精打細算","沉默是金"],answer:1,explanation:"✅ 正確！Chutzpah 意指「大膽、無畏、厚臉皮的自信」，在以色列文化中是創業精神的核心，敢質疑、敢挑戰權威。"},{zh:"「小圈圈」英文怎麼說？",hint:"公司裡那個小群體，不是人人都進得去",options:["Inner circle","Social group","Team building","Clique"],answer:3,explanation:"✅ 正確！Clique（讀音：kleek）就是「排外的小圈圈」。Inner circle 也對，但通常指高層核心圈，clique 更有排他感。"},{zh:"Email 開頭想說「如您所知」，哪個最道地？",hint:"商務 Email 常見開場白",options:["As you know,","As you may be aware,","Like you said,","FYI,"],answer:1,explanation:"✅ 正確！'As you may be aware,' 語氣更禮貌、更正式，給對方留面子。'As you know' 有時會顯得太直接甚至有點指責感。"},{zh:"「加班」英文最道地的說法是？",hint:"不是只有 work overtime 喔",options:["Work extra","Pull a long night / Work overtime","Stay in office","Do extra tasks"],answer:1,explanation:"✅ 正確！Work overtime 很標準，但 pull a long night / work late / burn the midnight oil 都更道地生動。"},{zh:"同事說 'Let's circle back on this.'，意思是？",hint:"會議上很常聽到這句",options:["我們繞圈子討論","我們之後再回來談這件事","這件事取消了","我不同意你的看法"],answer:1,explanation:"✅ 正確！Circle back = come back to this topic later，「之後再回來討論」。這是辦公室英文超高頻用語！"},{zh:"老闆說 'I'll take it under advisement.' 代表什麼？",hint:"聽起來很正面，但其實…",options:["我完全同意你","我會認真考慮（但不一定做）","我現在就執行","我不懂你在說什麼"],answer:1,explanation:"✅ 正確！這句話表面是「我會考慮」，實際上常常是委婉的拒絕或拖延。商務英文裡很多這種「表面客氣、實則婉拒」的說法！"},{zh:"你想在 Email 裡說「謝謝你的耐心等候」，哪句最道地？",hint:"等你回覆很久了，想客氣感謝一下",options:["Thank you for your patience.","Sorry for your waiting.","Thanks for waiting me.","I appreciate you wait."],answer:0,explanation:"✅ 正確！'Thank you for your patience.' 是最標準道地的說法。其他選項都有文法錯誤，要小心！"}];
+let current=0,score=0,answered=false;
+function loadQuestion(){answered=false;const q=questions[current];document.getElementById('question-num').textContent=`題目 ${current+1} / ${questions.length}`;document.getElementById('question-text').textContent=q.zh;document.getElementById('question-hint').textContent=`💡 提示：${q.hint}`;document.getElementById('progress-bar').style.width=`${(current/questions.length)*100}%`;const optionsEl=document.getElementById('options');optionsEl.innerHTML='';q.options.forEach((opt,i)=>{const btn=document.createElement('button');btn.className='option-btn';btn.textContent=opt;btn.onclick=()=>selectAnswer(i);optionsEl.appendChild(btn);});document.getElementById('feedback').style.display='none';document.getElementById('feedback').className='feedback';document.getElementById('next-btn').style.display='none';}
+function selectAnswer(index){if(answered)return;answered=true;const q=questions[current];const buttons=document.querySelectorAll('.option-btn');buttons.forEach(b=>b.disabled=true);const fb=document.getElementById('feedback');if(index===q.answer){score++;buttons[index].classList.add('correct');fb.className='feedback correct';fb.innerHTML=q.explanation;}else{buttons[index].classList.add('wrong');buttons[q.answer].classList.add('reveal');fb.className='feedback wrong';fb.innerHTML=`❌ 答錯了！正確答案是「${q.options[q.answer]}」<br><br>${q.explanation.replace('✅ 正確！','')}`;}fb.style.display='block';const nextBtn=document.getElementById('next-btn');nextBtn.style.display='block';nextBtn.textContent=current<questions.length-1?'下一題 →':'看我的成績 🎉';}
+document.getElementById('next-btn').onclick=()=>{current++;if(current<questions.length){loadQuestion();}else{showResult();}};
+function showResult(){document.getElementById('quiz-screen').style.display='none';const rs=document.getElementById('result-screen');rs.style.display='block';document.getElementById('score-num').textContent=score;let title,msg;if(score===10){title='滿分！你根本是英文達人 🏆';msg='厲害！這 10 題全對，你的職場英文程度已經超越大多數人了。追蹤 Yoyo 繼續精進，讓英文成為你職場最強武器！';}else if(score>=7){title='優秀！程度 B2–C1 👏';msg=`你答對了 ${score} 題，職場英文基礎相當紮實。還有幾個細節可以打磨，追蹤 @yoyo_business_english 補齊最後的缺口！`;}else if(score>=4){title='還不錯，繼續加油 💪';msg=`你答對了 ${score} 題，有基礎但還有進步空間。Yoyo 每週分享實用職場英文，快追蹤！`;}else{title='發現盲點了！沒關係 😊';msg=`你答對了 ${score} 題，這些職場英文的坑很多人都踩過。跟著 Yoyo 學絕對進步！`;}document.getElementById('result-title').textContent=title;document.getElementById('result-msg').textContent=msg;}
+function restartQuiz(){current=0;score=0;document.getElementById('result-screen').style.display='none';document.getElementById('quiz-screen').style.display='block';loadQuestion();}
+loadQuestion();
+</script>
+</body>
+</html>
